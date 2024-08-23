@@ -11,11 +11,11 @@ class ModelUpdater:
     Stores and updates weights of the model
     
     Attributs:
-    updated_model_path -- Path to the file in which to save the updated model
-    fc1_weights -- List to store the udpated weights of the weights of the fc1 layer
-    fc1_bias -- List to store the udpated bias of the bias of the fc1 layer
-    fc2_weights -- List to store the udpated weights of the weights of the fc2 layer
-    fc2_bias -- List to store the udpated bias of the bias of the fc2 layer
+    model_path -- Path to the file in which to save the updated model
+    nb_roc -- Number of client - server communication 
+    nb_users -- Number of users during the FL simulation
+    classifier_weights -- List to store the udpated weights of the weights of the classification head
+    classifier_bias -- List to store the udpated bias of the bias of the classification head
     """
     
     def __init__(self, model_path, nb_users,nb_roc):

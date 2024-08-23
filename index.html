@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Training App</title>
+  </head>
+  <body>
+    <h1>Training App</h1>
+    <main class="container">
+        <label class="custom-file-upload">
+            <input id="file-upload" type="file" accept="image/*" />
+            <img class="upload-icon" src="/script/upload-icon.png" />
+            Upload image
+        </label>
+        <input type="text" id="nb_roc" placeholder="Number of communication rounds"/>
+        <input type="text" id="nb_users" placeholder="Number of users"/>
+        <button type="submit" id="launch_federated">Launch Federated Learning</button>
+
+        <div class="output_container" id="output_container">
+            <div id="image-container" class="column" hidden></div>
+            <div id="predictions" class="column" hidden></div>
+        </div>
+        <div id="console" class="column" hidden></div>
+       
+    <script src="/script/script.js" type="module"></script>
+    <script src="/script/federated.js" type="module"></script>
+  </body>
+</html>

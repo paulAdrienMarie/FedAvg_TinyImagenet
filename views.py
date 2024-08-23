@@ -25,7 +25,7 @@ nb_users = None
 nb_roc = None
 
 async def set_num_user(request):
-    
+    """Saves the parameters given at execution in the backend"""
     global nb_users  # Declare the global variable
     global model_updater
     global nb_roc
@@ -51,7 +51,7 @@ async def set_num_user(request):
         return web.json_response(response_data, status=500)
 
 async def update_model(request):
-    
+    """Handles storage and update of model's parameters"""
     global nb_users  # Access the global variable
     
     try:
@@ -88,8 +88,10 @@ async def update_model(request):
         return web.json_response(response_data, status=500)
 
 async def index(request):
+    """Serves index.html file"""
     print("New connection")
     return web.FileResponse("./index.html")
 
 async def style(request):
+    """Serves style.css file"""
     return web.FileResponse("./style.css")

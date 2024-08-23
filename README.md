@@ -26,6 +26,8 @@ Run this loop as many time as needed to reach your target accuracy.
 
 ## Install Requirements  
 
+- Working for `Python 3.9.6`
+
 - Create a new virtual environnement : `python3 -m venv env` and activate it `source env/bin/activate`. Install the requirements for this project `pip install -r requirements.txt`.
 
 ## Run the project

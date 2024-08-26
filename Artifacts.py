@@ -128,6 +128,8 @@ class Artifacts:
             for param in onnx_model.graph.initializer
             if param.name not in requires_grad
         ]
+        
+        output_names = ["output"]
                 
         artifacts.generate_artifacts(
             onnx_model,
@@ -135,6 +137,7 @@ class Artifacts:
             loss=artifacts.LossType.L1Loss,
             requires_grad=requires_grad,
             frozen_params=frozen_params,
+            additional_output_names=output_names,
             artifact_directory=os.path.join(os.path.dirname(__file__), "artifacts")
         )
         

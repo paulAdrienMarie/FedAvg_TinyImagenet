@@ -2,19 +2,19 @@ from torchvision import transforms
 import torch
 import numpy as np
 import onnxruntime as ort
-import evaluate
 from onnxruntime.training.api import CheckpointState, Module
 from datasets import load_dataset
 from torch.utils.data import DataLoader
 import json
+import evaluate
 
 class Test:
     """
     Tests the updated model after FedAvg
     
-    Attributs:
-    path_to_model -- Path to model to test
-    metrics -- Dictionnary to store the metrics over the communication rounds
+    Attributes:
+    path_to_model -- Path to the model to test
+    metrics -- Dictionary to store the metrics over the communication rounds
     """
     
     def __init__(self):
@@ -56,12 +56,8 @@ class Test:
         return ort.InferenceSession(self.path_to_model)
     
     def softmax_activation(self, batch_logits):
-        res = []
-        for logit in batch_logits:
-            res.append(np.argmax(logit),axis=-1)
-            
-        return torch.Tensor(res)
-    
+        return torch.tensor(np.argmax(batch_logits, axis=-1))
+
     def generate_target_logits(self, batch_target):
         batch_size = len(batch_target)
         num_classes = 200  # Assuming 200 classes for tiny-imagenet
@@ -73,7 +69,15 @@ class Test:
         return target_logits
     
     def test(self, test_loader):
+        """
+        Runs test using the training artifacts
+        
+        Arguments:
+        test_loader -- Test set of Tiny ImageNet dataset
+        """
+        
         state = CheckpointState.load_checkpoint("./artifacts/checkpoint")
+
         module = Module(
             "./artifacts/training_model.onnx",
             state,
@@ -81,32 +85,25 @@ class Test:
             device="cpu"
         )
     
-        module.eval()
+        module.eval()  # Set the module in evaluation mode
         losses = []
-        import pdb
-        pdb.set_trace()
-        
         metric = evaluate.load('accuracy')
 
         for _, (data, target) in enumerate(test_loader):
-            
             data = data.to(torch.float32)
             target_logits = self.generate_target_logits(target.tolist())
             
             test_loss, logits = module(data.numpy(), target_logits.numpy())
-            
-            metric.add_batch(references=target,predictions=self.softmax_activation(logits=logits))
+            print(f"LOSS {test_loss}")
+            metric.add_batch(references=target, predictions=self.softmax_activation(logits))
             losses.append(test_loss)
 
         metrics = metric.compute()
-        print(f'Test Loss: {sum(losses)/len(losses):.4f}, Accuracy : {metrics["accuracy"]:.2f}')
-
-        mean_loss = sum(losses)/len(losses)
+        mean_loss = sum(losses) / len(losses)
         accuracy = metrics["accuracy"]
-        print(f'Test Loss: {mean_loss:.4f}, Accuracy : {accuracy:.4f}')
+        print(f'Test Loss: {mean_loss:.4f}, Accuracy: {accuracy:.4f}')
         
-        self.save_metrics(mean_loss,accuracy)
-        
+        self.save_metrics(mean_loss, accuracy)
         
     def save_metrics(self, loss, accuracy):
         """
@@ -120,15 +117,14 @@ class Test:
         self.metrics["losses"].append(loss)
         self.metrics["accuracies"].append(accuracy)
         
-        with open("metrics.json","w") as f:
-            json.dump(self.metrics,f)
+        with open("metrics.json", "w") as f:
+            json.dump(self.metrics, f)
         
     def __call__(self):
         test_loader = self.load_test_images()
         print("Testing with the training artifacts")
         self.test(test_loader)
         
-if __name__=="__main__":
+if __name__ == "__main__":
     test = Test()
     test()
-    

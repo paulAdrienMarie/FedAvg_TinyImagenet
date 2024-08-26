@@ -9,8 +9,17 @@ import argparse
 assert list(platform.python_version_tuple())[:-1] == ["3", "9"]
 
 class Model(torch.nn.Module):
+    """
+    Class for the modified version of google/vit-base-patch16-224
+    
+    Attributs:
+    nb_classes -- Number of classes of the modified classification head, 
+                  Implecitly equals to 200 
+    model_path -- Relatvie path where to save the model
+    """
     
     def __init__(self, nb_classes, model_path):
+        """Initializes a new instance of the Model class"""
         super(Model, self).__init__()
         self.nb_classes = nb_classes
         self.model_name = 'google/vit-base-patch16-224'

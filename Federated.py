@@ -78,7 +78,7 @@ class Federated:
             button.click()
 
             # Wait for the completion of training
-            WebDriverWait(driver, 600).until(
+            WebDriverWait(driver, 600000000000).until(
                 EC.presence_of_element_located((By.ID, 'completion_element_id'))  # Modify to the appropriate element ID
             )
 

@@ -70,7 +70,7 @@ async def update_model(request):
         if nb_users is None:
             return web.json_response({"error": "Number of users not set"}, status=400)
         
-        if len(model_updater.classifier_weights) % nb_users == 0:
+        if len(list(model_updater.parameters.items())) % nb_users == 0:
             print("Updating the model parameters")
             response_data = model_updater.update_model()
             print("Generating the new training artifacts based on the new model")

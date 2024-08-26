@@ -46,7 +46,7 @@ class Test:
         return images, labels
    
     def load_test_images(self):
-        batch_size = 1000
+        batch_size = 64
         tiny_imagenet = load_dataset('Maysee/tiny-imagenet', split='valid')  # Use the same dataset
         test_loader = DataLoader(tiny_imagenet, batch_size=batch_size, collate_fn=self.collate_fn)
         return test_loader
@@ -72,7 +72,7 @@ class Test:
 
         return target_logits
     
-    def test(self, test_loader, epoch):
+    def test(self, test_loader):
         state = CheckpointState.load_checkpoint("./artifacts/checkpoint")
         module = Module(
             "./artifacts/training_model.onnx",
@@ -83,6 +83,8 @@ class Test:
     
         module.eval()
         losses = []
+        import pdb
+        pdb.set_trace()
         
         metric = evaluate.load('accuracy')
 
@@ -91,13 +93,14 @@ class Test:
             data = data.to(torch.float32)
             target_logits = self.generate_target_logits(target.tolist())
             
-            forward_inputs = [data.numpy(), target_logits.numpy()]
-            test_loss, logits = module(*forward_inputs)
+            test_loss, logits = module(data.numpy(), target_logits.numpy())
             
             metric.add_batch(references=target,predictions=self.softmax_activation(logits=logits))
             losses.append(test_loss)
 
         metrics = metric.compute()
+        print(f'Test Loss: {sum(losses)/len(losses):.4f}, Accuracy : {metrics["accuracy"]:.2f}')
+
         mean_loss = sum(losses)/len(losses)
         accuracy = metrics["accuracy"]
         print(f'Test Loss: {mean_loss:.4f}, Accuracy : {accuracy:.4f}')

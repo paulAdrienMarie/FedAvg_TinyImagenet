@@ -187,7 +187,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     artifacts_path = os.path.join(os.path.dirname(__file__), "artifacts")
+    path_to_training = os.path.join(os.path.dirname(__file__), "artifacts","training_model.onnx"),
+    path_to_eval = os.path.join(os.path.dirname(__file__), "artifacts","eval_model.onnx"),
+    path_to_optimizer = os.path.join(os.path.dirname(__file__), "artifacts","optimizer_model.onnx"),
+    path_to_checkpoint = os.path.join(os.path.dirname(__file__), "artifacts","checkpoint"),
     model_path = os.path.join(os.path.dirname(__file__), "onnx/inference.onnx")
+    path_to_config = os.path.join(os.path.dirname(__file__), "static/conf.json")
     
     # Create the model and the training artifacts
     obj = Artifacts(
@@ -197,17 +202,17 @@ if __name__ == "__main__":
     )
         
     train = Train(
-        path_to_training = os.path.join(os.path.dirname(__file__), "artifacts","training_model.onnx"),
-        path_to_eval = os.path.join(os.path.dirname(__file__), "artifacts","eval_model.onnx"),
-        path_to_optimizer = os.path.join(os.path.dirname(__file__), "artifacts","optimizer_model.onnx"),
-        path_to_checkpoint = os.path.join(os.path.dirname(__file__), "artifacts","checkpoint"),
+        path_to_training = path_to_training,
+        path_to_eval = path_to_eval,
+        path_to_optimizer = path_to_optimizer,
+        path_to_checkpoint = path_to_checkpoint,
         path_to_model=model_path
     )
     test = Test(
-        path_to_training = os.path.join(os.path.dirname(__file__), "artifacts","training_model.onnx"),
-        path_to_eval = os.path.join(os.path.dirname(__file__), "artifacts","eval_model.onnx"),
-        path_to_optimizer = os.path.join(os.path.dirname(__file__), "artifacts","optimizer_model.onnx"),
-        path_to_checkpoint = os.path.join(os.path.dirname(__file__), "artifacts","checkpoint"),
+        path_to_training = path_to_training,
+        path_to_eval = path_to_eval,
+        path_to_optimizer = path_to_optimizer,
+        path_to_checkpoint = path_to_checkpoint,
         path_to_model=model_path
     )
     

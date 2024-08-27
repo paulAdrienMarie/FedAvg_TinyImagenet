@@ -55,15 +55,15 @@ class Federated:
 
             # Wait until the page is loaded and a specific element is present (modify the selector as needed)
             WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, 'body'))  # You can change this to a more specific element
+                EC.presence_of_element_located((By.TAG_NAME, "body"))  # You can change this to a more specific element
             )
 
             # Example of filling out input fields
-            user_field = driver.find_element(By.ID, 'nb_users')
+            user_field = driver.find_element(By.ID, "nb_users")
             user_field.clear()  # Clear any existing text
             user_field.send_keys(str(self.nb_users))  # Enter number of users
             
-            communication_round_field = driver.find_element(By.ID, 'nb_roc')
+            communication_round_field = driver.find_element(By.ID, "nb_roc")
             communication_round_field.clear()
             communication_round_field.send_keys(str(self.communication_round))
 

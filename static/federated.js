@@ -3,7 +3,7 @@ import * as ort from "/dist/ort.training.wasm.min.js";
 ort.env.wasm.wasmPaths = "/dist/";
 ort.env.wasm.numThreads = 1;
 
-let BATCHSIZE = 5;
+let BATCHSIZE = 10;
 let NUMUSERS = null;
 let NUMEPOCHS = null;
 
